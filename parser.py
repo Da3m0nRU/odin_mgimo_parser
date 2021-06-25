@@ -8,13 +8,25 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gec
 
 def get_html(url, params=None):
     r = requests.get(url, headers=HEADERS, params=params)
+    # отправляем запрос на сайт
+    r.encoding = 'utf-8'
+    #меняем кодировку для русских символов
     return r
+
+def get_content(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    # Создание объекта модуля beatifulsoup
+    items = soup.find_all('tr', class_='R3')
+
+    print(items)
 
 def parse():
     html = get_html(URL)
+    #передаём в html то, что получили с запроса
     print(html.status_code)
+    #Выводим ответ от сайта, если 200 - то всё ок.
     if html.status_code == 200:
-        print(html.text)
+        get_content(html.text)
     else:
         print("Ошибка!")
 
