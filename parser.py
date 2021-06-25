@@ -22,8 +22,9 @@ def get_content(html):
     for item in items:
         if (item.find('td', class_='R12C2') != None):
             applicants.append({
-                'title': item.find('td', class_='R12C2').get_text(strip = True)
+                'Applicant name': item.find('td', class_='R12C2').get_text(strip = True),
                 #strip - убирание пробелов спереди и сзади, get_text - получение текста только между тегами
+                'Average score': item.find('span').get_text(strip = True)
             })
 
     print(applicants)
