@@ -18,7 +18,15 @@ def get_content(html):
     # Создание объекта модуля beatifulsoup
     items = soup.find_all('tr', class_='R3')
 
-    print(items)
+    applicants = []
+    for item in items:
+        if (item.find('td', class_='R12C2') != None):
+            applicants.append({
+                'title': item.find('td', class_='R12C2')
+            })
+
+    print(applicants)
+    print(len(applicants))
 
 def parse():
     html = get_html(URL)
