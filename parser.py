@@ -21,6 +21,11 @@ def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
     # Создание объекта модуля beatifulsoup
     items = soup.find_all('tr', class_='R3')
+    find_date = soup.find_all('td', class_='R3C0')
+
+    date_of_formation = []
+    for date in find_date:
+        date_of_formation.append(date.get_text(strip = True))
 
     applicants = []
     for item in items:
@@ -31,11 +36,13 @@ def get_content(html):
                 'Средний_балл': item.find('span').get_text(strip = True)
             })
 
-    return applicants
+    return applicants, date_of_formation
 
-def save_file(items, path):
+def save_file(items, path, date_of_formation):
     with open(path, 'w', newline='') as file:
         writer = csv.writer(file, delimiter=';')
+        writer.writerow(['Список поданных заявлений: Колледж'])
+        writer.writerow([date_of_formation[0], date_of_formation[1]])
         writer.writerow(['ФИО', 'Средний балл'])
         for item in items:
             writer.writerow([item['ФИО'], item['Средний_балл']])
@@ -47,10 +54,11 @@ def parse():
     #print(html.status_code)
     #Выводим ответ от сайта, если 200 - то всё ок.
     if html.status_code == 200:
-        applicants = get_content(html.text)
-        save_file(applicants, FILE)
+        applicants, date_of_formation = get_content(html.text)
+        save_file(applicants, FILE, date_of_formation)
         print(applicants)
         print("Количество абитуриентов: " + str(len(applicants)))
+        print(date_of_formation)
     else:
         print("Ошибка!")
 
