@@ -22,7 +22,8 @@ def get_content(html):
     for item in items:
         if (item.find('td', class_='R12C2') != None):
             applicants.append({
-                'title': item.find('td', class_='R12C2')
+                'title': item.find('td', class_='R12C2').get_text(strip = True)
+                #strip - убирание пробелов спереди и сзади, get_text - получение текста только между тегами
             })
 
     print(applicants)
@@ -31,7 +32,7 @@ def get_content(html):
 def parse():
     html = get_html(URL)
     #передаём в html то, что получили с запроса
-    print(html.status_code)
+    #print(html.status_code)
     #Выводим ответ от сайта, если 200 - то всё ок.
     if html.status_code == 200:
         get_content(html.text)
