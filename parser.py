@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import os
+import glob
+from xlsxwriter.workbook import Workbook
 
 URL = 'https://lka.mgimo.ru/upload/sp/spospi%20(HTML).html'
 
@@ -23,21 +26,21 @@ def get_content(html):
     items = soup.find_all('tr', class_='R3')
     find_date = soup.find_all('td', class_='R3C0')
     serial_number = soup.find_all('td', class_='R12C0')
-    first_competition_group = soup.find_all('td', class_='R6C0')
-    second_competition_group = soup.find_all('td', class_='R130C0')
+    #first_competition_group = soup.find_all('td', class_='R6C0')
+    #second_competition_group = soup.find_all('td', class_='R165C0')
 
-    competition_group_list = []
-    for compets in first_competition_group:
-        competition_group_list.append(compets.get_text(strip = True))
-    for compets in second_competition_group:
-        competition_group_list.append(compets.get_text(strip=True))
+    competition_group_list = ['Банковское дело', 'Операционная деятельность в логистике', 'Право и организация социального обеспечения (Бюджет)', 'Право и организация социального обеспечения (Договор)']
+    #for compets in first_competition_group:
+        #competition_group_list.append(compets.get_text(strip = True))
+    #for compets in second_competition_group:
+        #competition_group_list.append(compets.get_text(strip=True))
 
-    for index in range(0, len(competition_group_list)):
-        try:
-            if competition_group_list[index] == "Конкурсная группа":
-                competition_group_list.pop(index)
-        except:
-            pass
+    #for index in range(0, len(competition_group_list)):
+        #try:
+            #if competition_group_list[index] == "Конкурсная группа":
+                #competition_group_list.pop(index)
+        #except:
+            #pass
 
     print(competition_group_list)
 
@@ -108,4 +111,7 @@ def parse():
     else:
         print("Ошибка!")
 
-parse()
+def main():
+    parse()
+
+main()
